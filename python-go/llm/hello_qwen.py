@@ -3,6 +3,16 @@ from openai import OpenAI
 """
 参考：
  调用通义千问API  https://help.aliyun.com/zh/model-studio/first-api-call-to-qwen?spm=a2c4g.11186623.help-menu-2400256.d_0_0_1.4bfe79f0q2hZgW#81e0419728kdd
+
+安装SDK
+    安装OpenAI Python SDK：
+    pip install -U openai
+    
+    安装DashScope Python SDK：
+    pip install -U dashscope
+    
+    备注：如果运行失败，您可以将pip替换成pip3再运行
+
 """
 try:
     client = OpenAI(
