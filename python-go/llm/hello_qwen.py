@@ -6,7 +6,7 @@ from openai import OpenAI
 
 安装SDK
     安装OpenAI Python SDK：
-    pip install -U openai
+    pip install -U openaibu
     
     安装DashScope Python SDK：
     pip install -U dashscope
