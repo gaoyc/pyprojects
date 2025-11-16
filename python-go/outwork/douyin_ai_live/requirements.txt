@@ -1,0 +1,7 @@
+dashscope>=1.14.0
+aliyun-python-sdk-core>=2.13.12
+aliyun-python-sdk-nls-cloud-meta>=1.0.6
+python-dotenv>=1.0.0
+requests>=2.31.0
+Flask>=2.3.0
+obsws-python>=1.1.0

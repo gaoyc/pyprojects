@@ -1,0 +1,43 @@
+# docker-compose.yml
+# ==================================================================================
+#  关键说明：
+# OBS 必须运行在宿主机（不能在容器内），因为需要捕获屏幕/摄像头；
+# 容器通过 host.docker.internal（Mac/Windows）或宿主机 IP（Linux）连接 OBS WebSocket；
+# 音频文件挂载到宿主机 ./audio 目录，方便查看和调试。
+# ==================================================================================
+version: '3.8'
+
+services:
+  douyin-ai-live:
+    build: .
+    ports:
+      - "5000:5000"        # Web界面
+      # 注意：OBS需在同一主机运行，容器无法直接控制宿主机OBS
+    environment:
+      - DASHSCOPE_API_KEY=${DASHSCOPE_API_KEY}
+      - ALIYUN_ACCESS_KEY_ID=${ALIYUN_ACCESS_KEY_ID}
+      - ALIYUN_ACCESS_KEY_SECRET=${ALIYUN_ACCESS_KEY_SECRET}
+      - OBS_HOST=host.docker.internal   # Docker Desktop for Mac/Windows
+      # Linux 用户请替换为宿主机IP，如 172.17.0.1 或 192.168.x.x
+      - OBS_PORT=4455
+      - OBS_PASSWORD=${OBS_PASSWORD}
+      - OBS_SOURCE_NAME=AI_Voice
+    volumes:
+      - ./audio:/app/audio   # 持久化音频文件
+    restart: unless-stopped
+
+    # Linux 用户特别注意（OBS 连接）
+    # Docker 默认无法通过 host.docker.internal 访问宿主机（仅 Mac/Windows 支持）
+    # 解决方案：使用宿主机网络模式 或 指定 IP
+    # 方法1：修改 docker-compose.yml（推荐）
+    extra_hosts:
+      - "host.docker.internal:host-gateway"   # Docker 20.10+
+    # 或者直接指定 OBS_HOST 为 172.17.0.1（docker0 网桥IP）
+
+    ## 方法2：手动获取宿主机 IP
+    # # Linux 查看 docker0 网桥 IP
+    #ip addr show docker0 | grep inet
+    ## 通常是 172.17.0.1
+
+    #然后在 .env 中设置：
+    #OBS_HOST=172.17.0.1
